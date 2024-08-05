@@ -12,7 +12,13 @@
     * [Códigos HTTP de respuesta](#códigos-http-de-respuesta)
 * [Manejo de certificados](#manejo-de-certificados)
 * [Web cache](#web-cache)
+* [Domain Name System (DNS)](#domain-name-system-dns)
+    * [Clases de servidores DNS](#clases-de-servidores-dns)
+    * [Registros DNS](#registros-dns)
+* [Dynamic Host Configuration Protocol (DHCP)](#dynamic-host-configuration-protocol-dhcp)
+    * [DHCP: ataques](#dhcp-ataques)
 * [Extras](#extras)
+    * [netstat](#netstat-network-statistic)
 * [Webgrafía](#webgrafía)
 
 # Aplicaciones de red
@@ -90,6 +96,7 @@ Para que un proceso reciba un mensaje, el mismo precisa de un identificador, el 
 * $\color{OrangeRed}{21}$: conexiones **FTP (File Transfer Protocol)** $\rightarrow$ tranferir archivos desde entre un servidor FTP y un cliente.
 * $\color{OrangeRed}{22}$: conexiones **SSH (Secure Shell)** $\rightarrow$ permite conectarse de forma segura a un servidor remoto y administrar el sistema a través de una línea de comando.
 * $\color{OrangeRed}{25}$: conexiones **SMTP (Simple Mail Transfer Protocol)** $\rightarrow$ enviar correos desde un servidor de correo electrónico a otro servidor de correo electrónico.
+* $\color{OrangeRed}{53}$: DNS **(Domain Name System)** $\rightarrow$ este se ejecute sobre protocolo UDP, y se encarga de traducir un dominio(nombre) a su dirección IP.
 * $\color{OrangeRed}{3389}$: conexiones de Escritorio Remoto de Windows $\rightarrow$ permite comunicarse de manera remota a un sistema Windows y controlarlo como si estuviera sentado frente a el.
 
 # Api (Interfaz de Programación de Aplicaciones)
@@ -275,9 +282,110 @@ Es un sistema que se encarga de almacenar localmente datos ya solicitados y así
 > [!CAUTION]
 > Un problema que puede tener un web cache mal configurado es la obsolencia que pueden tener los datos locales.
 
+# Domain Name System (DNS)
+
+Un host se puede identificar de dos maneras:
+* Nombre de host (dominio)  $\rightarrow$   preferido por personas.
+    * A la etiqueta ubicada más a la derecha se le llama **dominio de nivel superior**. Como com en www.google.com, o es en www.wikipedia.es
+    * Cada etiqueta a la izquierda especifica un **subdominio**. Este incluye el nombre de la máquina, y más a la izquierda de este, se especifica la manera de crear una ruta lógica a la información requerida.
+* Dirección IP  $\rightarrow$   preferido por los routers.
+
+Cuando un usuario ingresa un nombre de dominio, es el DNS el que se encarga de mapear/traducir este nombre a dirección IP:
+
+1. El cliente ejecuta la aplicación DNS.
+2. El navegador extrae el nombre de host, www.unaescuela.edu , del URL y pasa el nombre de host al lado del cliente de la aplicación DNS.
+3. El cliente DNS envía una consulta que contiene el nombre de host a un servidor DNS.
+4. El cliente DNS recibe una respuesta. Esta incluye la dirección IP correspondiente al nombre del host.
+5. Una vez que el navegador recibe la dirección IP del servidor DNS, puede iniciar una conexión TCP con el proceso servidor HTTP localizado en el puerto 80 en esa dirección IP.
+
+Algunas de las características de los servidores DNS son:
+
+* Organizados jerárquicamente y distribuidos alrededor del mundo.
+* Ningún servidor DNS dispone de todas las correspondencias de todos los host de internet.
+* Es una base de datos que almacena registros de recursos (resource record, RR).
+
+Lo anterior se da, ya que si se centralizaran los DNS, sería un único punto de falla, habría una enorme cantidad de tráfico que generaría retardos de acceso y sería difícil de mantener.
+
+## Clases de servidores DNS
+
+* **Servidor DNS recursivo**: recibe una consulta del cliente y verifica si la respuesta ya está almacenada en su caché.
+
+* **Servidor DNS local**: está configurado en una red local (como una oficina o una red doméstica) para proporcionar servicios DNS a los dispositivos dentro de esa red. Similar al DNS recursivo (solo que a nivel local), se encarga de almacenar en caché las consultas para mejorar el rendimiento, y puede implementar políticas de filtrado, bloqueo de sitios, o redirección de tráfico para dispositivos dentro de la red local.
+
+    * No pertenece estrictamente a la jerarquía.
+    * Cuando un host hace una consulta DNS, ésta es enviada a su servidor DNS local.
+
+<p align="center">
+<img src="./img/dns_local_iterativa.jpg" alt="Diagrama consulta iterativa DNS local"  width="400px">
+<img src="./img/dns_local_recursiva.jpg" alt="Diagrama consulta recursiva DNS local"  width="400px">
+</p>
+
+* **Servidor DNS raíz**: redirigen las consultas a los servidores TLD apropiados.
+
+* **Servidores de Dominio de nivel superior (Top-Level Domain, TLD)**: gestionan los dominios de nivel superior, siendo algunos .com, .org, .net, .edu, etc, así como los códigos de país como .uk, .ar, .jp.
+
+* **Servidores DNS Autoritarios**: contienen la información definitiva sobre un dominio específico. Son responsables de responder a las consultas DNS con respuestas autorizadas.
+Tipos de registros:
+    * **A (Address)**: Dirección IPv4.
+    * **AAAA (IPv6 Address)**: Dirección IPv6.
+    * **CNAME (Canonical Name)**: Alias de otro dominio.
+    * **MX (Mail Exchange)**: Servidor de correo.
+    * **TXT (Text)**: Información de texto.
+
+<p align="center"><img src="./img/dns_jerarquia.jpg" alt="Jerarquía de servidores DNS"  width="550px"></p>
+
+## Registros DNS
+
+<p align="center"><img src="./img/dns_registros.jpg" alt="Registros DNS"  width="550px"></p>
+<p align="center"><img src="./img/dns_registros_ejemplo.jpg" alt="Registros DNS"  width="550px"></p>
+
+## Otros servicios de DNS
+
+**Alias de host**: útil cuando un host tiene un nombre complicado. Redirige las solicitudes a otro nombre de dominio, que a su vez está asociado con una dirección IP.
+
+# Dynamic Host Configuration Protocol (DHCP)
+
+Es un protocolo de red tipo cliente/servidor donde un servidor DHCP asigna dinámicamente una dirección IP y otros parámetros de configuración de red a cada dispositivo.
+
+DHCP asigna:
+* Dirección IP
+* Máscara
+* Tiempo de vida
+
+Protocolo de nivel de aplicación:
+* Corre arriba de UDP.
+* Puerto 68 (cliente).
+* Puerto 67 (servidor).
+
+**Proceso de comunicación**
+
+1. **Descubrimiento**: el cliente DHCP envía (por broadcast) un mensaje de descubrimiento a la red para localizar un servidor DHCP disponible.
+2. **Oferta**: uno o más servidores DHCP responden al cliente con una oferta de configuración, que incluye una dirección IP y otros parámetros de configuración. La respuesta es enviada como un broadcast para asegurar que el cliente la reciba.
+3. **Solicitud**: el cliente responde a la oferta aceptando una de las direcciones IP ofrecidas mediante un mensaje de solicitud. Este mensaje también se envía como un broadcast para informar a todos los servidores DHCP sobre la elección del cliente.
+4. **Confirmación**: el servidor DHCP seleccionado confirma la asignación enviando un mensaje de confirmación al cliente.
+
+<p align="center"><img src="./img/dhcp_comunicacion.jpg" alt="Comunicación DHCP"  width="550px"></p>
+
+## DHCP: ataques
+
+El intercambio que se produce entre cliente y servidor no incluye autenticación. Esto genera la posibilidad de que en nuestra red existan "rogue servers" o "rogue clients" (servidores o clientes deshonestos).
+
+* **Rogue Server**: se instala un servidor de DHCP en nuestra red, el mismo puede comenzar a responder pedidos legítimos con respuestas que contienen valores que no permiten la conexión a la red.
+Otra modo de actuar es otorgando valores lo suficientemente correctos para que la operación sea exitosa, pero cambiando los nombres o puertas de enlace del servidor para redirigir el tráfico.
+
+* **Rogue client**: realiza peticiones continuas al servidor DHCP legítimo, hasta que el mismo agote todas las direcciones asignables que posee. Los clientes legítimos no podrán conectarse. 
+
+**Contramedidas**
+
+1. Inhabilitar en el firewall el paso de los paquetes de DHCP. Así cualquier inconveniente proviene de la red interna.
+2. Configurar el servidor para que conecte a una sola placa cuando exista más de una.
+3. No utilizar DHCP para asignar direcciones a equipos críticos.
+4. Cuando la seguridad sea crítica, realizar asignaciones por dirección MAC.
+5. Monitorear los archivos de log/auditorias.
+
 # Extras
 
-### netstat (Network Statistic)
+## netstat (Network Statistic)
 
 Provee de una lista de puertos abiertos y en uso, conexiones activas, estadísticas, etc.
 
@@ -294,4 +402,7 @@ Provee de una lista de puertos abiertos y en uso, conexiones activas, estadísti
 # Webgrafía
 
 https://es.wikipedia.org/wiki/Socket_de_Internet
+
 https://keepcoding.io/blog/que-es-un-socket/
+
+https://slideplayer.es/slide/1075629/
