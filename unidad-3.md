@@ -1,3 +1,24 @@
+* [Criptografía](#criptografía)
+* [Tipos de ataques](#tipos-de-ataques)
+* [Cifrado simétrico](#cifrado-simétrico)
+    * [Cifrado de César](#cifrado-de-césar)
+    * [Cifrado de César combinado (Mono-Alfabético)](#cifrado-de-césar-combinado-mono-alfabético)
+    * [Cifrado Poli-Alfabético](#cifrado-poli-alfabético)
+* [Cifrado simétrico Moderno](#cifrado-simétrico-moderno)
+    * [Cifrado de Flujo](#cifrado-de-flujo)
+    * [Cifrado de Bloque](#cifrado-de-bloque)
+* [Cifrado asimétrico](#cifrado-asimétrico)
+    * [Criptografía de clave pública](#criptografía-de-clave-pública)
+* [Integridad](#integridad)
+    * [Funciones HASH](#funciones-hash)
+    * [Firma digital](#firma-digital)
+* [Autenticación](#autenticación)
+    * [Kerberos](#kerberos)
+* [VPN (Red Privada Virtual)](#vpn-red-privada-virtual)
+* [Proxy](#proxy)
+    * [Proxy vs VPN vs NAT vs Web Caches](#proxy-vs-vpn-vs-nat-vs-web-caches)
+* [Webgrafía](#webgrafía)
+
 # Criptografía
 
 Es una práctica en la que se emplean distintas técnicas que permiten alterar y modificar mensajes o archivos con el objetivo de que puedan ser leídos por aquellos que no estén autorizados a hacerlo.
@@ -33,7 +54,7 @@ Es una práctica en la que se emplean distintas técnicas que permiten alterar y
 
 # Cifrado simétrico
 
-### Cifrado de César
+## Cifrado de César
 
 Cada letra del texto original es reemplazada por otra letra que se encuentra un número fijo de posiciones adelante en el alfabeto.
 
@@ -53,7 +74,7 @@ Cada letra del texto original es reemplazada por otra letra que se encuentra un 
     * L -> O (L + 3 posiciones)
     * O -> R (O + 3 posiciones)
 
-### Cifrado de César combinado (Mono-Alfabético)
+## Cifrado de César combinado (Mono-Alfabético)
 
 Se establece una permutación fija del alfabeto para sustituir las letras del texto original.
 
@@ -75,7 +96,7 @@ Se establece una permutación fija del alfabeto para sustituir las letras del te
     * O -> G
 
 
-### Cifrado Poli-Alfabético
+## Cifrado Poli-Alfabético
 
 Utiliza múltiples alfabetos de sustitución para cifrar el texto. Un ejemplo común es el cifrado de Vigenère.
 
@@ -99,13 +120,37 @@ Utiliza múltiples alfabetos de sustitución para cifrar el texto. Un ejemplo co
 
 # Cifrado simétrico Moderno
 
-**Cifrado de Flujo**
+## Cifrado de Flujo
 
-**Cifrado de Bloque**
+Los datos se cifran bit a bit o byte a byte, creando un flujo continuo de datos cifrados.
+
+**Ejemplo:**
+
+* Mensaje a cifrar: "HELLO_WORLD".
+* El generador de clave produce una secuencia pseudorrandom de bits.
+* Cada bit del mensaje se combina con un bit de la secuencia de clave usando XOR para producir el flujo cifrado.
+
+## Cifrado de Bloque
+
+Los datos se dividen en bloques de un tamaño fijo (por ejemplo, 64 bits o 128 bits) y cada bloque se cifra de manera individual usando la misma clave de cifrado.
+
+**Pasos:**
+
+1. Los bloques se dividen en bloques de tamaño fijo.
+2. Cada bloque se cifra por separado.
+
+**Ejemplo:**
+
+* Mensaje a cifrar: "HELLO_WORLD".
+* Separamos el mensaje en bloques de 4 caracteres.
+    * "HELL" (primer bloque)
+    * "O_WO" (segundo bloque)
+    * "RLD" (tercer bloque, posiblemente rellenado para completar el tamaño del bloque).
+* Cada bloque se cifraría de forma independiente usando la misma clave.
 
 # Cifrado asimétrico
 
-**Criptografía de clave pública**
+## Criptografía de clave pública
 
 * **Clave Pública**: Se distribuye abiertamente y se utiliza para cifrar datos.
 * **Clave Privada**: Se mantiene en secreto y se utiliza para descifrar datos.
@@ -130,7 +175,7 @@ La imagen anterior ilustra la situación:
 
 # Integridad
 
-### Funciones HASH
+## Funciones HASH
 
 Son algoritmos que toman un input de tamaño arbitrario (como un archivo o mensaje) y producen un output de tamaño fijo, conocido como **hash**. El hash permite mantener y verificar la integridad de los datos, siendo alguna de las características que lo destacan:
 
@@ -171,7 +216,7 @@ Son algoritmos que toman un input de tamaño arbitrario (como un archivo o mensa
 > [!NOTE]
 > Los ataque de colisión contra funciones hash son intentos de encontrar dos entradas diferentes que, cuando se pasan por una función hash, producen el mismo valor hash.
 
-### Firma digital
+## Firma digital
 
 Es una técnica criptográfica que permite verificar la autenticidad e integridad de un mensaje, software o documento digital, así como garantizar que el firmante es quien dice ser.
 
@@ -196,7 +241,7 @@ Proceso ilustrado en la imagen anterior:
 
 # Autenticación
 
-### Kerberos
+## Kerberos
 
 Es un servicio de autenticación basado en el protocolo de **clave simétrica**. Se lo utiliza en redes informáticas abiertas o no seguras para prevenir ataques intermediarios y garantizar que los datos de las credenciales del usuario no sean interceptados durante el proceso de autenticación.
 
@@ -243,37 +288,75 @@ Es un servidor que actúa como intermediario entre un dispositivo e Internet.
 * Almacenan en caché el contenido de sitios web visitados frecuentemente para así acelerar la navegación.
 * Ofrecen seguridad adicional y permiten a los administradores controlar y monitorear el uso de Internet.
 
-# VPN vs Proxy
+**Tipos de proxy**
+
+* **Proxy HTTP** $\rightarrow$ controla y gestiona solicitudes HTTP. Puede realizar tareas como filtrado de contenido, registro de solicitudes, autorizaciones, entre otros.
+
+* **Proxy HTTPS** $\rightarrow$ controla y gestiona el tráfico cifrado HTTPS. Permite la inspección y el enrutamiento de las solicitudes y respuestas HTTPS.
+
+* **Proxy SOCKS** $\rightarrow$ maneja diferentes tipos de tráfico, incluidos HTTP y HTTPS y aplicaciones de red más complejas. Proporciona una capa adicional de seguridad y puede ser útil en entornos que requieren acceso remoto.
+
+* **Proxy inverso** $\rightarrow$ Se coloca en el lado del servidor y actúa como un intermediario entre los clientes y los servidores finales. Ayuda a equilibrar la carga de tráfico, mejorar el rendimiento y proporcionar funciones de seguridad, como la protección contra ataques DDoS.
+
+* **Proxy transparente** $\rightarrow$ captura todas las solicitudes de forma transparente y las envía al servidor final. Los clientes no son conscientes de la existencia del proxy.
+
+* **Proxy de filtrado de contenido** $\rightarrow$ puede bloquear sitios web o aplicar políticas de acceso al contenido que se muestra a los clientes.
+
+* **Proxy de caché** $\rightarrow$ actúa como un intermediario entre los clientes y los servidores finales. Almacena en caché las respuestas de los servidores y las entrega directamente a los clientes si la misma solicitud se realiza nuevamente.
+
+* **Proxy de carga** $\rightarrow$ distribuye la carga de trabajo entre múltiples servidores de destino.
+
+* **Proxy de API** $\rightarrow$ actúa como intermediario entre los clientes y los servicios de la API, proporcionando características como autenticación, autorización, enrutamiento, registro y seguimiento de solicitudes, límites de velocidad, transformación de datos, entre otros
+
+## Proxy vs VPN vs NAT vs Web Caches
 
 <table>
     <tr>
         <th>Características</th>
         <th>VPN</th>
         <th>Proxy</th>
+        <th>NAT</th>
+        <th>Web Caches</th>
     </tr>
     <tr>
         <td>Cifrado</td>
         <td><strong>Cifrado completo</strong> entre un dispositivo y el servidor VPN</td>
         <td><strong>Generalmente no cifran el tráfico</strong> (aunque algunos proxies lo hacen)</td>
+        <td>No necesariamente cifrado, pero puede estar combinado con otras tecnologías que lo proporcionan</td>
+        <td>No cifran el tráfico, simplemente almacenan copias de los datos</td>
     </tr>
     <tr>
         <td>Alcance</td>
         <td>Todo el tráfico de un dispositivo</td>
         <td>Solo manejan el tráfico de ciertas aplicaciones o navegadores</td>
+        <td>Tráfico entrante y saliente de la red privada</td>
+        <td>Centrado en tráfico de los protocolos HTTP y HTTPS</td>
     </tr>
     <tr>
         <td>Filtrado de contenido</td>
         <td>No, enfoque en seguridad y privacidad</td>
         <td>Sí, común en entornos controlados</td>
+        <td>No, principal objetivo es la traducción de direcciones</td>
+        <td>Sí, puede filtrar contenido en función de políticas de caché</td>
     </tr>
     <tr>
         <td>Almacenamiento en caché</td>
         <td>No almacena en caché</td>
         <td>Sí, para acelerar el acceso a contenido frecuente</td>
+        <td>No almacena en caché</td>
+        <td>Sí, almacena contenido web para reducir tiempos de acceso</td>
     </tr>
     <tr>
         <td>Objetivo Principal</td>
         <td>Seguridad, privacidad y anonimato</td>
         <td>Control de acceso y optimización</td>
+        <td>Traducción de direcciones de red para facilitar la conexión de múltiples dispositivos a través de una sola dirección IP pública</td>
+        <td>Reduce los tiempos de carga, reduce la carga del servidor y ahorro de ancho de banda</td>
     </tr>
 </table>
+
+# Webgrafía
+
+https://www.ibm.com/docs/es/cics-ts/6.x?topic=cics-kerberos
+
+https://nic.ar/es/enterate/novedades/que-es-criptografia
