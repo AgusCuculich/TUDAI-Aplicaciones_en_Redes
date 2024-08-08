@@ -1,3 +1,11 @@
+* [Modelo TCP/IP](#modelo-tcpip)
+    * [Aplicación](#aplicación)
+    * [Transporte](#transporte)
+    * [Red](#red)
+    * [Enlace](#enlace)
+        * [Hub](#hub)
+        * [Switch](#switch)
+        * [MAC](#mac)
 * [Dirección IP](#dirección-ip)
     * [Máscara de red](#máscara-de-red)
 * [Router](#router)
@@ -6,14 +14,82 @@
     * [Enrutamiento o ruteo](#enrutamiento-o-ruteo)
         * [Ruteo estático vs ruteo dinámico](#ruteo-estático-vs-ruteo-dinámico)
         * [Tablas de ruteo](#tablas-de-ruteo)
-* [Modelo TCP/IP](#modelo-tcpip)
-    * [Aplicación](#aplicación)
-    * [Transporte](#transporte)
-    * [Red](#red)
-        * [ARP (Adress Resolution Protocol)](#arp-adress-resolution-protocol)
-        * [Clasless Inter-Domain Routing (CIDR)](#clasless-inter-domain-routing-cidr)
+* [ARP (Adress Resolution Protocol)](#arp-adress-resolution-protocol)
+* [Firewall](#firewall)
+* [NAT](#nat)
+* [DNAT](#dnat)
 * [Extra](#extra)
 * [Webgrafía](#webgrafía)
+
+# Modelo TCP/IP
+
+<p align="center"><img src="./img/modelo-tcp-ip.jpg" width="650px"></p>
+
+## Aplicación
+
+Es la capa más cercana al usuario final. Se encarga de una variedad de funciones:
+
+* Proporciona interfaces que permiten a los usuarios interactuar con la red.
+* Proporciona servicios específicos de red como correo electrónico, tranferencia de archivos, navegación web, etc.
+* Gestiona la autenticación de usuario y el acceso a recursos de la red del mismo.
+* Gestiona el inicio, mantenimiento y terminación de sesiones de comunicación entre aplicaciones.
+
+$\color{Orchid}{Protocolos\ principales}$:
+
+* $\color{Orchid}{HyperText\ Transfer\ Protocol\ (HTTP)}$ $\rightarrow$ transferencia de documentos hipertexto.
+* $\color{Orchid}{HyperText Transfer Protocol Secure (HTTPS)}$ $\rightarrow$ transferencia segura de documentos de hipertexto (utiliza SSL/TLS para cifrar la comunicación).
+* $\color{Orchid}{File Transfer Protocol (FTP)}$ $\rightarrow$ transferencia de archivos entre un servidor FTP y un cliente.
+* $\color{Orchid}{Simple Mail Transfer Protocol (SMTP)}$ $\rightarrow$ envio de correos desde un servidor de correo electrónico a otro servidor de correo electrónico.
+* $\color{Orchid}{Domain Name System (DNS)}$ $\rightarrow$ se encarga de traducir un dominio(nombre) a su dirección IP. Utiliza UDP como su protocolo de transporte para enviar y recibir mensajes.
+
+## Transporte
+
+Se encarga de la tranferencia de datos host-host entre procesos para una aplicación específica. Para lograr esto, divide los datos en segmentos para su transmisión y luego los ensambla en el destino.
+
+$\color{Orchid}{Protocolos\ principales}$: <a href="./unidad-1.md#edge-network---protocolos">TCP y UDP</a>
+
+$\color{Orchid}{Componentes}$: Segmentos, números de puerto, direcciones IP.
+
+## Red
+
+Esta capa se encarga de determinar la mejor ruta para transmitir los datagras/paquetes (datos) desde el origen hasta el destino, incluso si estos están en distintas redes.
+
+$\color{Orchid}{Protocolos\ principales}$: Internet Protocol (IP), Internet Control Message Protocol (ICMP), Adress Resolution Protocol (ARP), etc.
+
+$\color{Orchid}{Componentes}$: routers, direcciones IP, tablas de ruteo.
+
+[Más info sobre esta capa: protocolos, dispositivos, etc :arrow_down:](#dirección-ip)
+
+## Enlace
+
+Esta capa se encarga de la transferencia de datos entre nodos de una misma red. Las tramas de bits (datos) son organizados en unidades llamadas "frame", que además de los datos encapsulados, contienen información importante para la transferencia como son la MAC origen y MAC destino, control de errores, etc.
+
+$\color{Orchid}{Protocolos\ principales}$: 
+
+* $\color{Orchid}{Ethernet}$: define como se transmiten las tramas en una red de área local (LAN) cableado.
+* $\color{Orchid}{wifi}$: permite la tranferencia de datos sin cables en una WLAN.
+
+$\color{Orchid}{Componentes}$: direcciones MAC, tramas, switches, hubs.
+
+### Hub
+
+Puede ser visto como un repetidor multipuerto, regenera los datos y los transmite a todos los puertos. Los hubs tienen un único dominio de coalisión, lo que quiere decir que si los datos enviados por dos equipo colisionan en el segmento de uno de los puertos, todos los demás dispositivos (incluso estando conectados a distintos puertos) se verán afectados.
+
+<p align="center"><img src="./img/hub.png" width="600px"></p>
+
+<p align="center"><img src="./img/hub_coalision.png" width="400px"></p>
+
+### Switch
+
+Divide una red en varios dominios de colisión (1x puerto). El equipo almacena una tabla de registro (CAM) que asocia las MAC de los equipos con el puerto al que están conectados, permitiendo la transmisión de datos entre equipos mediante sus direcciones MAC.
+
+### MAC
+
+Identificador único de 48 bits que identifica a una tarjeta de red (NIC). Viene determinada por el fabricante y no puede repetirse.
+
+<p align="center"><img src="./img/mac.png" width="400px"></p>
+
+Por ejemplo, las direcciones MAC que comienzan con 00:1e:c2 pertenecen al fabricante Apple.
 
 # Dirección IP
 
@@ -100,42 +176,12 @@ $\color{Orchid}{Minimización\ por\ sumarización}$: este método agrupa aquella
 
 <img src="./img/ejemplo-minimizacion2.png" width="400px">
 
-# Modelo TCP/IP
+$\color{Orchid}{Clasless\ Inter-Domain\ Routing\ (CIDR)}$: permite disminuir la sobrecarga de los routers al agrupar subredes cuyas IPs tienen una misma secuencia inicial.
 
-<p align="center"><img src="./img/modelo-tcp-ip.jpg" width="650px"></p>
+<img src="./img/cidr_ejemplo.png" width="400px">
 
-## Aplicación
 
-Es la capa más cercana al usuario final. Se encarga de una variedad de funciones:
-
-* Proporciona interfaces que permiten a los usuarios interactuar con la red.
-* Proporciona servicios específicos de red como correo electrónico, tranferencia de archivos, navegación web, etc.
-* Gestiona la autenticación de usuario y el acceso a recursos de la red del mismo.
-* Gestiona el inicio, mantenimiento y terminación de sesiones de comunicación entre aplicaciones.
-
-$\color{Orchid}{Protocolos\ principales}$:
-
-* $\color{Orchid}{HyperText\ Transfer\ Protocol\ (HTTP)}$ $\rightarrow$ transferencia de documentos hipertexto.
-* $\color{Orchid}{HyperText Transfer Protocol Secure (HTTPS)}$ $\rightarrow$ transferencia segura de documentos de hipertexto (utiliza SSL/TLS para cifrar la comunicación).
-* $\color{Orchid}{File Transfer Protocol (FTP)}$ $\rightarrow$ transferencia de archivos entre un servidor FTP y un cliente.
-* $\color{Orchid}{Simple Mail Transfer Protocol (SMTP)}$ $\rightarrow$ envio de correos desde un servidor de correo electrónico a otro servidor de correo electrónico.
-* $\color{Orchid}{Domain Name System (DNS)}$ $\rightarrow$ se encarga de traducir un dominio(nombre) a su dirección IP. Utiliza UDP como su protocolo de transporte para enviar y recibir mensajes.
-
-## Transporte
-
-Se encarga de la tranferencia de datos host-host entre procesos para una aplicación específica. Para lograr esto, divide los datos en segmentos para su transmisión y luego los ensambla en el destino.
-
-$\color{Orchid}{Protocolos\ principales}$: <a href="./unidad-1.md#edge-network---protocolos">TCP y UDP</a>
-
-$\color{Orchid}{Componentes}$: Segmentos, números de puerto, direcciones IP.
-
-## Red
-
-Esta capa se encarga de determinar la mejor ruta para transmitir los datagras/paquetes (datos) desde el origen hasta el destino, incluso si estos están en distintas redes.
-
-$\color{Orchid}{Protocolos\ principales}$: Internet Protocol (IP), Internet Control Message Protocol (ICMP), Adress Resolution Protocol (ARP), etc.
-
-### ARP (Adress Resolution Protocol)
+# ARP (Adress Resolution Protocol)
 
 $\color{Orchid}{Su\ misión\ es\ traducir\ la\ dirección\ IP\ de\ una\ máquina\ a\ la\ dirección\ física\ (MAC)\ del\ adaptador\ de\ red}$. Un equipo para comunicarse con otro dentro de su misma red necesita la MAC destino. El problema es que en algunos casos solo tiene la IP destino pero no la MAC destino. En estos casos entre el protocolo ARP:
 
@@ -156,42 +202,42 @@ $\color{Orchid}{Su\ misión\ es\ traducir\ la\ dirección\ IP\ de\ una\ máquina
 * Ethernet está basado en direcciones MAC.
 * Por cada interfaz del router se contruye una tabla ARP (las entradas de la misma se eliminan pasado un tiempo).
 
-### Clasless Inter-Domain Routing (CIDR)
+# Firewall
 
-Permite disminuir la sobrecarga de los routers al agrupar subredes cuyas IPs tienen una misma secuencia inicial.
+Sistema o grupo de sistemas utilizados para separar una máquina o una subred (zona protegida) del resto de la red (zona de riesgo). Controla las comunicaciones, permitiéndolas o prohibiéndolas según las políticas de que red establecidas.
 
-<img src="./img/cidr_ejemplo.png" width="400px">
+* $\color{Orchid}{Perímetro\ interno}$: donde se sitúan todos los recursos sensibles a un posible ataque.
+* $\color{Orchid}{Perímetro\ externo}$: donde se sitúan los recursos menos sensibles que necesitan ser accesibles desde la red externa por motivos funcionales.
 
-## Enlace
+El firewall actúa sobre la capa de red y la capa de transporte del modelo TCP/IP. Se encarga de analizar la cabecera de los paquetes sin llegar a los datos.
 
-Esta capa se encarga de la transferencia de datos entre nodos de una misma red. Las tramas de bits (datos) son organizados en unidades llamadas "frame", que además de los datos encapsulados, contienen información importante para la transferencia como son la MAC origen y MAC destino, control de errores, etc.
+Existen dos políticas por defecto a la hora de configurar un firewall:
 
-$\color{Orchid}{Protocolos\ principales}$: 
+* $\color{Orchid}{Aceptación}$: se rechazan todas las conexiones consideradas peligrosas mientras que se aceptan o admiten todas las demás.
 
-* $\color{Orchid}{Ethernet}$: define como se transmiten las tramas en una red de área local (LAN) cableado.
-* $\color{Orchid}{wifi}$: permite la tranferencia de datos sin cables en una WLAN.
+* $\color{Orchid}{Rechazo}$: se aceptan aquellas conexiones que se consideran legales o válidas mientras que se rechazan todas la demás.
 
-$\color{Orchid}{Componentes}$: direcciones MAC, tramas, switches, hubs.
+# NAT
 
-### Hub
+Técnica que permite a múltiples dispositivos en una red privada que compartan una única dirección IP pública para comunicarse en Internet. Cuando los dispositivos en una red local se conectan a Internet, los paquetes de datos enviados desde estos dispositivos tienen direcciones IP privadas, que no son únicas en Internet. NAT actúa como un intermediario entre la red local e Internet, traduciendo estas IPs privadas a una IP pública.
 
-Puede ser visto como un repetidor multipuerto, regenera los datos y los transmite a todos los puertos. Los hubs tienen un único dominio de coalisión, lo que quiere decir que si los datos enviados por dos equipo colisionan en el segmento de uno de los puertos, todos los demás dispositivos (incluso estando conectados a distintos puertos) se verán afectados.
+<p align="center">
+<img src="./img/nat1.png" width="600px">
+<img src="./img/nat2.png" width="600px">
+<img src="./img/nat3.png" width="600px">
+</p>
 
-<p align="center"><img src="./img/hub.png" width="600px"></p>
+# DNAT
 
-<p align="center"><img src="./img/hub_coalision.png" width="400px"></p>
+Esta técnica se utiliza para aquellos servicios que se encuentran dentro de una red privada y necesitan ser accesibles desde Internet. El tráfico entrante es redirigido desde una dirección IP y/o puerto específico a otra dirección IP y/o puerto dentro de una red privada (se añade una entrada fija en la tabla NAT).
 
-### Switch
+Por ejemplo, si queremos tener un servidor WEB en nuestra red:
 
-Divide una red en varios dominios de colisión (1x puerto). El equipo almacena una tabla de registro (CAM) que asocia las MAC de los equipos con el puerto al que están conectados, permitiendo la transmisión de datos entre equipos mediante sus direcciones MAC.
+* Se debe crear una entrada fija en la tabla de NAT en la que se indique que lo que llegue al puerto 80 (web) sea dirigido al equipo en el que corre el servidor web.
 
-### MAC
+<p align="center"><img src="./img/dnat.png" width="600px"></p>
 
-Identificador único de 48 bits que identifica a una tarjeta de red (NIC). Viene determinada por el fabricante y no puede repetirse.
-
-<p align="center"><img src="./img/mac.png" width="400px"></p>
-
-Por ejemplo, las direcciones MAC que comienzan con 00:1e:c2 pertenecen al fabricante Apple.
+# Netfilter/Iptables
 
 # Extra
 
