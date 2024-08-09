@@ -383,6 +383,109 @@ Otra modo de actuar es otorgando valores lo suficientemente correctos para que l
 4. Cuando la seguridad sea crítica, realizar asignaciones por dirección MAC.
 5. Monitorear los archivos de log/auditorias.
 
+# Correo electrónico
+
+Tres mayores componentes:
+
+* Agente usuario o cliente de correo.
+* Servidor de correo.
+* Simple Mail Transfer Protocol (SMTP).
+
+Un $\color{Orchid}{servidor\ de\ correo}$ se compone de:
+
+* $\color{Orchid}{Casilla}$: contiene mensajes de entrada para el usuario.
+* $\color{Orchid}{Cola\ de\ mensajes}$ de los correos de salida.
+
+<p align="center"><img src="./img/mail.png" width="450px"></p>
+<p align="center"><img src="./img/mail_ejemplo.png" width="450px"></p>
+
+### Cabecera de mail
+
+<p align="center"><img src="./img/mail_cabecera.png" width="450px"></p>
+
+Mensajes con contenido multimedia:
+
+<p align="center"><img src="./img/mail_cabecera2.png" width="450px"></p>
+
+### Protocolos
+
+$\color{Orchid}{Simple\ Mail\ Transfer Protocol\ (SMTP)}$: permite enviar correos desde un servidor de correo electrónico a otro servidor de correo electrónico.
+
+* Cliente: servidor que envía el correo.
+* Servidor: servidor que recibe el correo.
+
+$\color{Orchid}{Post\ Office\ Protocol\ version\ 3\ (POP3)}$:
+
+* Permite a un cliente descargar los mensajes desde el servidor a un dispositivo local. Una vez que los correos electrónicos se descargan en el cliente de correo, normalmente se eliminan del servidor.
+* Útil cuando accedes a tu correo electrónico desde un solo dispositivo y quieres mantener tus correos almacenados localmente.
+
+$\color{Orchid}{Internet\ Message\ Access\ Protocol\ (IMAP)}$:
+
+* Permite que los mensajes permanezcan en el servidor, y solo una copia temporal se descarga en el cliente de correo. Los cambios realizados en un dispositivo (como marcar un correo como leído, moverlo a una carpeta, o eliminarlo) se sincronizan en todos los dispositivos conectados.
+* Permite la organización de correos en carpetas directamente en el servidor. También soporta etiquetas y estados de lectura, lo que facilita la gestión del correo electrónico a gran escala.
+* Como los correos se almacenan en el servidor, se requiere más espacio de almacenamiento en el servidor, especialmente si tienes muchos mensajes o archivos adjuntos grandes.
+
+> [!NOTE]
+> Servicios de correo electrónico como Gmail, Outlook, etc, permiten a los usuarios elegir el protocolo que mejor se adapte a sus necesidades y preferencias.
+
+# File Transfer Protocol (FTP)
+
+### Conexiones separadas de control y datos
+
+Establecimiento de la conexión de control
+
+1. El cliente FTP se conecta al servidor FTP a través del puerto 21 utilizando el protocolo TCP, que es confiable y garantiza que los datos lleguen en orden y sin errores.
+
+2. Una vez establecida la conexión, el cliente necesita autenticarse (con un nombre de usuario y contraseña, por ejemplo) para obtener acceso al servidor. Este paso le da al cliente el control sobre la sesión.
+
+3. A través de esta conexión de control, el cliente puede enviar comandos al servidor para navegar por los directorios remotos, listar archivos, cambiar de directorio, etc.
+
+Transferencia de archivos
+
+4. Cuando el servidor recibe una petición de transferencia de archivo, el servidor abre una conexión de datos hacia el cliente. Éste es el Modo Activo.
+
+5. Después de la transferencia de un archivo, el servidor cierra la conexión de datos.
+
+Transferencias adicionales y modos de operación:
+
+6. Si se necesita transferir otro archivo, el servidor abrirá una nueva conexión de datos específica para ese archivo.
+
+7. La conexión de control se mantiene activa pero separada (fuera de banda) de las conexiones de datos, permitiendo gestionar múltiples transferencias de archivos sin interferir con el canal de control.
+
+8. El servidor FTP mantiene un estado para cada sesión, que incluye el directorio actual y la cuenta de usuario conectada.
+
+9. Existe otro modo llamado modo pasivo, en el cual es el cliente quien establece la conexión de datos, en lugar del servidor. Esto es útil en escenarios donde el cliente está detrás de un firewall que no permite conexiones entrantes.
+
+<p align="center"><img src="./img/ftp_comandos.png" width="450px"></p>
+
+### FTP vs SFTP
+
+Ftp no encripta su tráfico, tanto la password como los datos transferidos pueden ser leídos al tener acceso a los paquetes de la conexión. $\color{Orchid}{Secure File Transfer Protoco (SFTP)}$ es su equivalente con transferencias encriptadas. Nos permite autenticarnos y realizar transferencia de ficheros entre equipos como FTP, pero utilizando criptografía del protocolo SSH
+
+# Secure Shell (SSH)
+
+Es un protocolo de red que permite el acceso a un dispositivo por acceso remoto a través de una conexión segura.
+
+A través de una conexión SSH se puede:
+
+* Administrar las carpetas y archivos del servidor.
+* Cambiar los permisos de accesos a dichas carpetas.
+* Modificar el contenido de los archivos del servidor.
+
+Requiere:
+* Usuario
+* Puerto (por defecto el tcp 22)
+* Servidor
+
+Se utiliza:
+* Linux y Mac desde la terminal
+* Windows un cliente ssh, más utilizado Putty
+
+Autenticación:
+* El servidor SSH y el cliente se deben autenticar mutuamente.
+* Se genera una clave de sesión entre el cliente y el servidor
+* Existe encriptación entre el cliente y el servidor.
+
 # Extras
 
 ## netstat (Network Statistic)
