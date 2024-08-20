@@ -1,6 +1,3 @@
-Aquí tienes las respuestas a las preguntas:
-
----
 
 **1. Direcciones IP: Explicá la diferencia entre una dirección IPv4 y una dirección IPv6. ¿Cuáles son las principales ventajas de IPv6 sobre IPv4? Además, proporcioná un ejemplo de cada tipo de dirección y describí su estructura.**
 
@@ -18,7 +15,6 @@ Aquí tienes las respuestas a las preguntas:
 - **IPv4:** 4 octetos separados por puntos (cada octeto es un número decimal de 0 a 255).
 - **IPv6:** 8 grupos de 4 dígitos hexadecimales separados por dos puntos.
 
----
 
 **2. DNS (Sistema de Nombres de Dominio): Describí cómo funciona el Sistema de Nombres de Dominio (DNS) y su estructura de registro. ¿Cuál es el propósito de un servidor DNS? Explicá el proceso de resolución de nombres de dominio desde que un usuario ingresa una URL en su navegador hasta que la página web es cargada.**
 
@@ -34,7 +30,6 @@ Aquí tienes las respuestas a las preguntas:
 4. La dirección IP asociada al dominio se devuelve al navegador.
 5. El navegador utiliza la dirección IP para establecer una conexión con el servidor web y cargar la página.
 
----
 
 **3. VLSM (Variable Length Subnet Masking): Explicá qué es VLSM y cómo se utiliza en la creación de subredes. Proporcioná un ejemplo detallado -una red simple con dos subredes- de cómo se puede dividir una red principal en subredes utilizando VLSM, incluyendo el cálculo de las subredes y sus respectivas máscaras de subred.**
 
@@ -48,7 +43,6 @@ Aquí tienes las respuestas a las preguntas:
 - **Segunda subred (50 hosts):** La máscara de subred adecuada es `/26` (255.255.255.192), lo que permite 62 hosts.
   - Subred: `192.168.1.128/26` (Rango: `192.168.1.129 - 192.168.1.190`)
 
----
 
 **4. TCP/IP: Un proceso accesible en la Internet (por ejemplo, un web server) puede ser accedido conociendo la dirección IP del equipo donde se está ejecutando. Explicá detalladamente este razonamiento.**
 
@@ -56,7 +50,6 @@ Aquí tienes las respuestas a las preguntas:
 - **Proceso:** Cuando ingresas la IP en el navegador, se envía una solicitud HTTP o HTTPS al servidor que responde con el contenido solicitado (página web).
 - **Razonamiento:** El protocolo TCP/IP es la base de Internet, y permite la transmisión de datos entre dispositivos, utilizando direcciones IP para identificar los destinos.
 
----
 
 **5. DHCP (Protocolo de Configuración Dinámica de Host): Explicá qué es DHCP y cómo funciona. ¿Cuáles son las ventajas de usar DHCP en una red en comparación con la asignación manual de direcciones IP? Además, describe el proceso de asignación de una dirección IP a un dispositivo en una red utilizando DHCP, detallando los diferentes mensajes intercambiados durante este proceso.**
 
@@ -75,5 +68,3 @@ Aquí tienes las respuestas a las preguntas:
 4. **Ack:** El servidor DHCP confirma la asignación de la dirección IP con un mensaje DHCP Ack.
 
 ---
-
-Estas respuestas deberían cubrir los puntos que necesitas. Si tienes alguna otra duda o necesitas aclaraciones, estoy aquí para ayudar.
